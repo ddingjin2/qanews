@@ -27,6 +27,11 @@ LOG_PATH = BASE_DIR / "logs" / "digest.log"
 KST = timezone(timedelta(hours=9))
 LOG_MAX_BYTES = 1_000_000
 LOG_BACKUP_COUNT = 5
+RSS_REQUEST_TIMEOUT = 20
+RSS_REQUEST_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (compatible; QAnews/0.1; +https://github.com/ddingjin2/qanews)",
+    "Accept": "application/rss+xml, application/atom+xml, application/xml, text/xml, */*",
+}
 
 sys.dont_write_bytecode = True
 
@@ -412,6 +417,24 @@ def sent_url_exists(conn: sqlite3.Connection, url: str) -> bool:
     return cursor.fetchone() is not None
 
 
+def parse_feed(source: Source) -> tuple[Any, int | str | None]:
+    try:
+        response = requests.get(
+            source.url,
+            headers=RSS_REQUEST_HEADERS,
+            timeout=RSS_REQUEST_TIMEOUT,
+        )
+        status = response.status_code
+        response.raise_for_status()
+        return feedparser.parse(response.content), status
+    except requests.RequestException:
+        fallback_feed = feedparser.parse(source.url, request_headers=RSS_REQUEST_HEADERS)
+        fallback_status = getattr(fallback_feed, "status", None)
+        if fallback_feed.entries and not str(fallback_status).startswith(("4", "5")):
+            return fallback_feed, fallback_status
+        raise
+
+
 def fetch_candidates(
     sources: list[Source],
     conn: sqlite3.Connection,
@@ -430,16 +453,19 @@ def fetch_candidates(
         stats.source_stats.append(source_stats)
 
         try:
-            feed = feedparser.parse(
-                source.url,
-                request_headers={"User-Agent": "QAnews/0.1 (+RSS monitoring)"},
-            )
-        except Exception:
+            feed, status = parse_feed(source)
+        except requests.RequestException as exc:
             logging.exception("Failed to fetch RSS feed: %s (%s)", source.name, source.url)
+            if getattr(exc, "response", None) is not None:
+                source_stats.status = exc.response.status_code
             source_stats.error = "fetch failed"
             continue
+        except Exception:
+            logging.exception("Failed to parse RSS feed: %s (%s)", source.name, source.url)
+            source_stats.error = "parse failed"
+            continue
 
-        source_stats.status = getattr(feed, "status", None)
+        source_stats.status = status
         source_stats.fetched_count = len(feed.entries)
         stats.total_fetched += len(feed.entries)
 

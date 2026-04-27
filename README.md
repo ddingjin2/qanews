@@ -103,11 +103,17 @@ rss:
     url: https://medium.com/feed/29cm
   - name: Hyperconnect Tech
     url: https://hyperconnect.github.io/feed.xml
+  - name: Reddit SoftwareTesting QA Search
+    url: "https://www.reddit.com/r/softwaretesting/search.rss?q=QA%20OR%20testing%20OR%20test%20automation&restrict_sr=1&sort=new"
+  - name: Reddit QualityAssurance Search
+    url: "https://www.reddit.com/r/QualityAssurance/search.rss?q=QA%20OR%20testing%20OR%20automation%20OR%20playtesting&restrict_sr=1&sort=new"
+  - name: Reddit GameDev QA Search
+    url: "https://www.reddit.com/r/gamedev/search.rss?q=QA%20OR%20testing%20OR%20playtesting&restrict_sr=1&sort=new"
 ```
 
 LinkedIn, Twitter/X처럼 기본 RSS를 제공하지 않거나 로그인이 필요한 SNS는 기본 수집 대상이 아닙니다.
 
-API를 사용하지 않는 범위에서 RSS/Atom 피드만 수집합니다. 기본 소스에는 해외 QA/테스팅 블로그, 일부 글로벌 엔지니어링 블로그, 한국 IT 기업 테크 블로그가 포함되어 있습니다. Reddit RSS처럼 환경에 따라 403/429를 반환하는 소스는 기본 목록에서 제외했습니다. 필요한 경우 직접 `sources.yaml`에 추가할 수 있으며, 해당 소스가 실패해도 다른 RSS 소스 처리는 계속됩니다.
+API를 사용하지 않는 범위에서 RSS/Atom 피드만 수집합니다. 기본 소스에는 해외 QA/테스팅 블로그, 일부 글로벌 엔지니어링 블로그, 한국 IT 기업 테크 블로그, Reddit 공개 RSS 검색이 포함되어 있습니다. Reddit은 환경에 따라 403/429를 반환할 수 있으므로, 해당 소스가 실패해도 다른 RSS 소스 처리는 계속됩니다.
 
 ## dry-run 실행 방법
 
