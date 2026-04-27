@@ -9,9 +9,21 @@ rss:
     url: https://www.qasource.com/blog/rss.xml
   - name: Google Testing Blog
     url: https://testing.googleblog.com/atom.xml
-  - name: Reddit GameDev QA Search
-    url: "https://www.reddit.com/r/gamedev/search.rss?q=QA%20OR%20testing%20OR%20playtesting&restrict_sr=1&sort=new"
-  - name: Reddit QualityAssurance Game QA Search
-    url: "https://www.reddit.com/r/QualityAssurance/search.rss?q=game%20QA%20OR%20video%20game%20testing%20OR%20playtesting&restrict_sr=1&sort=new"
-  - name: Reddit SoftwareTesting Game QA Search
-    url: "https://www.reddit.com/r/softwaretesting/search.rss?q=game%20testing%20OR%20game%20QA%20OR%20test%20automation&restrict_sr=1&sort=new"
+  - name: Applitools Blog
+    url: https://applitools.com/blog/feed/
+  - name: BrowserStack Blog
+    url: https://www.browserstack.com/blog/feed/
+  - name: Katalon Blog
+    url: https://katalon.com/resources-center/blog/rss.xml
+  - name: Automation Panda
+    url: https://automationpanda.com/feed/
+  - name: Satisfice Blog
+    url: https://www.satisfice.com/blog/feed
+  - name: DevelopSense Blog
+    url: https://developsense.com/blog/feed/
+  - name: Martin Fowler
+    url: https://martinfowler.com/feed.atom
+  - name: GitHub Engineering
+    url: https://github.blog/engineering/feed/
+  - name: Meta Engineering
+    url: https://engineering.fb.com/feed/

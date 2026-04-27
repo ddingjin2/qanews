@@ -33,6 +33,7 @@ SLACK_WEBHOOK_URL=
 DISCORD_WEBHOOK_URL=
 DATABASE_PATH=./data/digest.db
 MAX_POSTS=10
+SOURCE_MAX_POSTS=3
 LOOKBACK_HOURS=168
 MIN_SCORE=2
 SEND_EMPTY_DIGEST=false
@@ -43,6 +44,7 @@ SEND_EMPTY_DIGEST=false
 - `SLACK_WEBHOOK_URL` 또는 `DISCORD_WEBHOOK_URL` 중 하나 이상이 설정되어야 실제 전송이 가능합니다.
 - `DATABASE_PATH`: SQLite DB 경로입니다. 기본값은 `./data/digest.db`입니다.
 - `MAX_POSTS`: 한 번에 보낼 최대 게시글 수입니다.
+- `SOURCE_MAX_POSTS`: 한 소스에서 한 번에 보낼 최대 게시글 수입니다. `0` 이하로 설정하면 제한하지 않습니다.
 - `LOOKBACK_HOURS`: 최근 몇 시간 이내 게시글을 볼지 정합니다. QA 관련 RSS 글 빈도를 고려해 기본값은 168시간입니다.
 - `MIN_SCORE`: 이 점수 이상인 글만 발송 후보가 됩니다.
 - `SEND_EMPTY_DIGEST`: 신규 글이 없을 때 Webhook 메시지를 보낼지 정합니다.
@@ -63,17 +65,29 @@ rss:
     url: https://www.qasource.com/blog/rss.xml
   - name: Google Testing Blog
     url: https://testing.googleblog.com/atom.xml
-  - name: Reddit GameDev QA Search
-    url: "https://www.reddit.com/r/gamedev/search.rss?q=QA%20OR%20testing%20OR%20playtesting&restrict_sr=1&sort=new"
-  - name: Reddit QualityAssurance Game QA Search
-    url: "https://www.reddit.com/r/QualityAssurance/search.rss?q=game%20QA%20OR%20video%20game%20testing%20OR%20playtesting&restrict_sr=1&sort=new"
-  - name: Reddit SoftwareTesting Game QA Search
-    url: "https://www.reddit.com/r/softwaretesting/search.rss?q=game%20testing%20OR%20game%20QA%20OR%20test%20automation&restrict_sr=1&sort=new"
+  - name: Applitools Blog
+    url: https://applitools.com/blog/feed/
+  - name: BrowserStack Blog
+    url: https://www.browserstack.com/blog/feed/
+  - name: Katalon Blog
+    url: https://katalon.com/resources-center/blog/rss.xml
+  - name: Automation Panda
+    url: https://automationpanda.com/feed/
+  - name: Satisfice Blog
+    url: https://www.satisfice.com/blog/feed
+  - name: DevelopSense Blog
+    url: https://developsense.com/blog/feed/
+  - name: Martin Fowler
+    url: https://martinfowler.com/feed.atom
+  - name: GitHub Engineering
+    url: https://github.blog/engineering/feed/
+  - name: Meta Engineering
+    url: https://engineering.fb.com/feed/
 ```
 
 LinkedIn, Twitter/X처럼 기본 RSS를 제공하지 않거나 로그인이 필요한 SNS는 기본 수집 대상이 아닙니다.
 
-Reddit RSS 검색은 로그인 없이 접근 가능한 RSS 소스로만 사용합니다. Reddit이 요청을 차단하거나 일시적으로 403/429를 반환할 수 있으므로, 해당 소스가 실패해도 다른 RSS 소스 처리는 계속됩니다.
+API를 사용하지 않는 범위에서 RSS/Atom 피드만 수집합니다. Reddit RSS처럼 환경에 따라 403/429를 반환하는 소스는 기본 목록에서 제외했습니다. 필요한 경우 직접 `sources.yaml`에 추가할 수 있으며, 해당 소스가 실패해도 다른 RSS 소스 처리는 계속됩니다.
 
 ## dry-run 실행 방법
 

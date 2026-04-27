@@ -188,6 +188,12 @@ def ensure_directories() -> None:
     (BASE_DIR / "data").mkdir(parents=True, exist_ok=True)
 
 
+def configure_console_encoding() -> None:
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
+
+
 def setup_logging() -> None:
     logging.basicConfig(
         level=logging.INFO,
@@ -464,6 +470,22 @@ def format_digest(posts: list[CandidatePost], digest_date: datetime) -> str:
     return "\n".join(lines)
 
 
+def limit_posts_per_source(posts: list[CandidatePost], source_max_posts: int) -> list[CandidatePost]:
+    if source_max_posts <= 0:
+        return posts
+
+    selected: list[CandidatePost] = []
+    source_counts: dict[str, int] = {}
+    for post in posts:
+        current_count = source_counts.get(post.source, 0)
+        if current_count >= source_max_posts:
+            continue
+        selected.append(post)
+        source_counts[post.source] = current_count + 1
+
+    return selected
+
+
 def send_to_slack(webhook_url: str, message: str) -> None:
     response = requests.post(webhook_url, json={"text": message}, timeout=15)
     response.raise_for_status()
@@ -565,6 +587,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> int:
+    configure_console_encoding()
     ensure_directories()
     setup_logging()
     load_dotenv(BASE_DIR / ".env")
@@ -572,6 +595,7 @@ def main() -> int:
 
     db_path = database_path_from_env()
     max_posts = int_from_env("MAX_POSTS", 10)
+    source_max_posts = int_from_env("SOURCE_MAX_POSTS", 3)
     lookback_hours = int_from_env("LOOKBACK_HOURS", 168)
     min_score = int_from_env("MIN_SCORE", 2)
     send_empty_digest = str_to_bool(os.getenv("SEND_EMPTY_DIGEST"), default=False)
@@ -594,7 +618,7 @@ def main() -> int:
                 lookback_hours=lookback_hours,
                 min_score=min_score,
             )
-            posts = all_candidates[:max_posts]
+            posts = limit_posts_per_source(all_candidates, source_max_posts)[:max_posts]
 
             logging.info("Selected %s post(s) for digest.", len(posts))
 
