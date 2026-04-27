@@ -95,6 +95,8 @@ rss:
     url: https://toss.tech/rss.xml
   - name: Daangn Tech
     url: https://medium.com/feed/daangn
+  - name: Kurly Tech Blog
+    url: https://helloworld.kurly.com/rss.xml
   - name: Banksalad Tech
     url: https://blog.banksalad.com/rss.xml
   - name: Spoqa Tech
