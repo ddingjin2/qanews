@@ -83,11 +83,31 @@ rss:
     url: https://github.blog/engineering/feed/
   - name: Meta Engineering
     url: https://engineering.fb.com/feed/
+  - name: LINE Engineering KR
+    url: https://engineering.linecorp.com/ko/feed/
+  - name: Kakao Tech
+    url: https://tech.kakao.com/feed/
+  - name: Naver D2
+    url: https://d2.naver.com/d2.atom
+  - name: Woowahan Tech
+    url: https://techblog.woowahan.com/feed/
+  - name: Toss Tech
+    url: https://toss.tech/rss.xml
+  - name: Daangn Tech
+    url: https://medium.com/feed/daangn
+  - name: Banksalad Tech
+    url: https://blog.banksalad.com/rss.xml
+  - name: Spoqa Tech
+    url: https://spoqa.github.io/rss.xml
+  - name: 29CM Tech
+    url: https://medium.com/feed/29cm
+  - name: Hyperconnect Tech
+    url: https://hyperconnect.github.io/feed.xml
 ```
 
 LinkedIn, Twitter/X처럼 기본 RSS를 제공하지 않거나 로그인이 필요한 SNS는 기본 수집 대상이 아닙니다.
 
-API를 사용하지 않는 범위에서 RSS/Atom 피드만 수집합니다. Reddit RSS처럼 환경에 따라 403/429를 반환하는 소스는 기본 목록에서 제외했습니다. 필요한 경우 직접 `sources.yaml`에 추가할 수 있으며, 해당 소스가 실패해도 다른 RSS 소스 처리는 계속됩니다.
+API를 사용하지 않는 범위에서 RSS/Atom 피드만 수집합니다. 기본 소스에는 해외 QA/테스팅 블로그, 일부 글로벌 엔지니어링 블로그, 한국 IT 기업 테크 블로그가 포함되어 있습니다. Reddit RSS처럼 환경에 따라 403/429를 반환하는 소스는 기본 목록에서 제외했습니다. 필요한 경우 직접 `sources.yaml`에 추가할 수 있으며, 해당 소스가 실패해도 다른 RSS 소스 처리는 계속됩니다.
 
 ## dry-run 실행 방법
 
